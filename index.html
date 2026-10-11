@@ -16,7 +16,11 @@ font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial
 padding:0 0 40px;-webkit-text-size-adjust:100%}
 .wrap{padding:0 14px;max-width:640px;margin:0 auto}
 header{background:linear-gradient(120deg,#0d4f63,#14614f 55%,#1d6b33);color:#fff;
-padding:calc(env(safe-area-inset-top) + 16px) 16px 16px;margin-bottom:14px}
+margin-bottom:14px;
+/* Full-bleed banner, but its TEXT has to line up with the centred 640px column
+   below it. .wrap content starts at (100vw-640)/2 + 14px = 50vw - 306px. On a
+   phone that's negative, so max() falls back to the normal 14px gutter. */
+padding:calc(env(safe-area-inset-top) + 16px) max(14px, 50vw - 306px) 16px}
 header h1{margin:0;font-size:19px;font-weight:600;letter-spacing:-.2px}
 header .d{opacity:.82;font-size:12.5px;margin-top:3px}
 .hstat{display:flex;gap:14px;margin-top:12px;padding-top:12px;
@@ -237,4 +241,4 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
-<p style="text-align:center;color:#b0b0b0;font-size:11px;padding:14px 0 26px">build 20261011-164338</p></body></html>
+<p style="text-align:center;color:#b0b0b0;font-size:11px;padding:14px 0 26px">build 20261011-165104</p></body></html>
