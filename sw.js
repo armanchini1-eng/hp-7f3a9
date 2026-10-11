@@ -1,5 +1,5 @@
-/* 20 Minutes / Half Plan — offline shell. Build 20261005-174128 */
-var CACHE = 'halfplan-20261005-174128';
+/* 20 Minutes / Half Plan — offline shell. Build 20261011-164338 */
+var CACHE = 'halfplan-20261011-164338';
 var ASSETS = ['./', './index.html'];
 
 self.addEventListener('install', function (e) {
@@ -17,17 +17,22 @@ self.addEventListener('activate', function (e) {
   );
 });
 
-/* Stale-while-revalidate: instant from cache, refreshed in the background. */
+/* NETWORK-FIRST. Freshness beats speed here: a stale training plan is worse than a
+   slow one, and the page is ~95 KB. Falls back to cache the moment the network
+   fails, so the gym with no signal still works. (v1 was stale-while-revalidate,
+   which served yesterday's plan on every first load — not what you want.) */
 self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.open(CACHE).then(function (cache) {
-      return cache.match(e.request).then(function (hit) {
-        var net = fetch(e.request).then(function (res) {
-          if (res && res.status === 200) cache.put(e.request, res.clone());
-          return res;
-        }).catch(function () { return hit; });
-        return hit || net;
+    fetch(e.request).then(function (res) {
+      if (res && res.status === 200) {
+        var copy = res.clone();
+        caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
+      }
+      return res;
+    }).catch(function () {
+      return caches.match(e.request).then(function (hit) {
+        return hit || caches.match('./index.html');
       });
     })
   );
