@@ -1,5 +1,5 @@
-/* 20 Minutes / Half Plan — offline shell. Build 20261011-165104 */
-var CACHE = 'halfplan-20261011-165104';
+/* 20 Minutes / Half Plan — offline shell. Build 20261014-162647 */
+var CACHE = 'halfplan-20261014-162647';
 var ASSETS = ['./', './index.html'];
 
 self.addEventListener('install', function (e) {
